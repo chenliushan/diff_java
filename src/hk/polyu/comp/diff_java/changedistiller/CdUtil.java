@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.changedistiller.distilling.FileDistiller;
 import ch.uzh.ifi.seal.changedistiller.model.classifiers.EntityType;
 import ch.uzh.ifi.seal.changedistiller.model.entities.SourceCodeChange;
 import ch.uzh.ifi.seal.changedistiller.model.entities.StructureEntityVersion;
+import com.sun.java.accessibility.util.AccessibilityListenerList;
 import hk.polyu.comp.diff_java.SimpleLogger;
 
 import java.io.File;
@@ -16,6 +17,10 @@ import java.util.Set;
  * Created by liushanchen on 16/8/10.
  */
 public class CdUtil {
+    public static int ALL = 1;
+    public static int INSERT = 1;
+    public static int UPDATE = 1;
+    public static int DELETE = 1;
 
     public static StructureEntityVersion isDesiredChange(File left, File right) {
         if (left != null && right != null) {
@@ -79,9 +84,8 @@ public class CdUtil {
                             return null;
                     }
                 }
-                if (methods.size() == 1 &&
-                        countDesired > 0 && countDesired <= 1 &&
-                        (countI <= 1 && countU <= 1 && countD <= 1))
+                if (methods.size() == 1 && countDesired > 0 && countDesired <= ALL &&
+                        (countI <= INSERT && countU <= UPDATE && countD <= DELETE))
                     for (StructureEntityVersion r : methods) {
                         if (r.getType().isMethod())
                             return r;

@@ -22,7 +22,7 @@ public class EntryPoint {
             if (Objects.equals(action, "startServer"))
                 startGWServer();
             else if (action.equals("isDesiredModifications"))
-                isDesiredModifications(args[1], args[2]);
+                isDesiredModifications("", args[1], args[2], 4, 2, 2, 3);
             else
                 System.out.println("Cannot recognize arg: " + action);
         }
@@ -39,15 +39,19 @@ public class EntryPoint {
         System.out.println("GatewayServer start.");
     }
 
-    public static boolean isDesiredModifications(String parent_path, String child_path) {
+    public static boolean isDesiredModifications(String bugId, String parent_path, String child_path, Integer all, Integer insert, Integer update, Integer delete) {
+        CdUtil.ALL = all;
+        CdUtil.INSERT = insert;
+        CdUtil.UPDATE = update;
+        CdUtil.DELETE = delete;
         SimpleLogger.info("Processing: " + parent_path + " : " + child_path);
         File oldF = new File(parent_path);
         File newF = new File(child_path);
         if (CdUtil.isDesiredChange(oldF, newF) != null) {
-            SimpleLogger.info("Desired!");
+            SimpleLogger.info(bugId + "Desired!");
             return true;
         } else
-            SimpleLogger.info("Undesired.");
+            SimpleLogger.info(bugId + "Undesired.");
         return false;
 
     }
